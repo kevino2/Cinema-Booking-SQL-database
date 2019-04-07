@@ -9,7 +9,7 @@ class Ticket
   def initialize(options)
     @id = options['id'].to_i if options['id']
     @customer_id = options['customer_id']
-    @film_id = options['film']
+    @film_id = options['film_id']
   end
 
   def save
@@ -33,12 +33,23 @@ class Ticket
    SqlRunner.run (sql)
   end
 
+  def delete()
+    sql = "DELETE FROM tickets WHERE id = $1"
+    values = [@id]
+    SqlRunner.run(sql, values)
+  end
+
   def update()
    sql = "UPDATE tickets SET (customer_id, film_id)
    VALUES ($1, $2) WHERE id = $3"
    values = [@customer_id, @film_id, @id]
    SqlRunner.run(sql, values)
   end
+
+  # def total_tickets()
+  #   sql = "SELECT COUNT.* FROM tickets
+  #     WHERE tickets.customer_id = $1"
+  #   values = [@id]
 
 
 end

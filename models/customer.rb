@@ -4,10 +4,10 @@ attr_accessor :name, :funds
 attr_reader :id
 
   def initialize(options)
-    @id = options ['id'].to_i if options['id']
+    @id = options['id'].to_i if options['id']
     @name = options['name']
     @funds = options['funds']
-  end
+ end
 
   def save
     sql = "INSERT INTO customers (name, funds)
@@ -36,12 +36,25 @@ attr_reader :id
      SqlRunner.run(sql)
    end
 
+   def delete()
+     sql = "DELETE FROM customers WHERE id = $1"
+     values = [@id]
+     SqlRunner.run(sql, values)
+   end
+
    def buy_ticket(film)
      unless @funds < film.price
        @funds -= film.price
        update()
      end
    end
+
+   def films_viewed_by_customer()
+    sql = "SELECT films.* FROM films INNER JOIN tickets ON tickets.film_id = films.id WHERE customer_id = $1"
+    values = [@id]
+    films_viewed = SqlRunner.run(sql, values).first
+    return films_viewed.map { |film| films Film.new(film) }
+  end
 
 
 end
