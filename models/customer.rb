@@ -52,8 +52,8 @@ attr_reader :id
    def films_viewed_by_customer()
     sql = "SELECT films.* FROM films INNER JOIN tickets ON tickets.film_id = films.id WHERE customer_id = $1"
     values = [@id]
-    films_viewed = SqlRunner.run(sql, values).first
-    return films_viewed.map { |film| films Film.new(film) }
+    films_viewed = SqlRunner.run(sql, values)
+    return films_viewed.map { |film| Film.new(film) }
   end
 
 

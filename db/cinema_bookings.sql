@@ -19,9 +19,9 @@ CREATE TABLE films (
 
 CREATE TABLE screenings (
   id SERIAL PRIMARY KEY,
-  showtime INT,
+  showtime VARCHAR,
   film_id INT REFERENCES films(id) ON DELETE CASCADE,
-  max_seats INT
+  full_capacity INT
 );
 
 CREATE TABLE tickets (
